@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -13,7 +14,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        return Category::orderBy('id', 'desc')->get();
     }
 
     /**
@@ -34,7 +35,9 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Category::create($request->all());
+
+        return response()->json(['created' => true], 201);
     }
 
     /**
@@ -54,9 +57,9 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return $category;
     }
 
     /**
@@ -66,9 +69,11 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $category->update($request->all());
+
+        return response()->json(['updated' => true], 200);
     }
 
     /**
@@ -77,8 +82,10 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return response()->json(['deleted' => true], 200);
     }
 }
